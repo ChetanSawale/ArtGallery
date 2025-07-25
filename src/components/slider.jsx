@@ -2,6 +2,8 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 // import { Link } from "react-router-dom"; // Using <a> tags to avoid router context errors
 import { motion, useScroll, useTransform } from "framer-motion";
+import { Link } from 'react-router-dom';
+
 
 import "./slider.css";
 import FeaturedArtistSection from "./FeaturedArtistSection";
@@ -85,9 +87,11 @@ export default function ContinuousImageSlider() {
             <h1 className="text-4xl lg:text-6xl mb-5 font-mono">Discover Your Passion for Art Today</h1>
             <p className="text-lg lg:text-xl mb-5 font-mono">Dive into a world of creativity and inspiration. Explore stunning artworks from talented artists around the globe.</p>
             <div className="flex font-mono justify-center md:justify-start gap-4">
-              <a href="/explore">
-                <button className="px-6 h-12 rounded-full bg-indigo-400 text-white font-semibold hover:bg-indigo-500 transition">Explore</button>
-              </a>
+            <Link to="/explore">
+              <button className="px-6 h-12 rounded-full bg-indigo-400 text-white font-semibold hover:bg-indigo-500 transition">
+                Explore
+              </button>
+            </Link>
               <button className="px-6 h-12 border-2 border-double rounded-full bg-[#000000] text-[#ffffff] font-semibold hover:bg-[#ffffff] hover:text-[#000000] transition">
                 Join
               </button>

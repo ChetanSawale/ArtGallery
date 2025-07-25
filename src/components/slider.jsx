@@ -1,16 +1,16 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
-// import { Link } from "react-router-dom"; // Using <a> tags to avoid router context errors
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from 'react-router-dom';
 
-
 import "./slider.css";
+// ✨ Removed imports for Footer and other sections
 import FeaturedArtistSection from "./FeaturedArtistSection";
 import CommunitySpotlightSection from "./CommunitySpotlightSection";
 import Footer from "./Footer";
 
-// Placeholder images for the top slider since local assets can't be accessed.
+
+// Placeholder images
 import img1 from '../assets/letters/image1.avif';
 import img2 from '../assets/letters/image2.avif';
 import img3 from '../assets/letters/image3.avif';
@@ -34,29 +34,36 @@ const images2 = [
   "https://i.pinimg.com/736x/ae/fd/38/aefd383040a4c61d367e9dc4c208285e.jpg",
 ];
 
-export default function ContinuousImageSlider() {
+export default function ContinuousImageSlider({ user, isDarkMode }) {
   const imageList = [...images, ...images];
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  // Slideshow effect for the image
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images2.length);
-    }, 200); 
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  // Ref for the lime-colored container to track scroll progress
   const discoverSectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: discoverSectionRef,
-    offset: ["start center", "end end"] // Animation starts when center of section hits center of screen
+    offset: ["start center", "end end"]
   });
 
-  // Map scroll progress to scale, x-translation, and opacity
-  const scale = useTransform(scrollYProgress, [0, 0.8], [1, 4]); // Gets bigger faster
-  const x = useTransform(scrollYProgress, [0, 0.8], ["0%", "-50%"]); // Moves left as it scales
-  const textOpacity = useTransform(scrollYProgress, [0.7, 0.85], [0, 1]); // Text appears as it nears max size
+  const scale = useTransform(scrollYProgress, [0, 0.8], [1, 4]);
+  const x = useTransform(scrollYProgress, [0, 0.8], ["0%", "-50%"]);
+  const textOpacity = useTransform(scrollYProgress, [0.7, 0.85], [0, 1]);
   const textY = useTransform(scrollYProgress, [0.7, 0.85], ["20px", "0px"]);
 
   return (
@@ -76,29 +83,34 @@ export default function ContinuousImageSlider() {
         </div>
       </div>
       
-      {/* This is the container for the scroll animation */}
       <div
         ref={discoverSectionRef}
         id="discover-section"
-        className="h-[200vh] relative mt-10" // Height provides scroll room
+        className="h-[200vh] relative mt-10"
       >
-        <div className="sticky top-0 h-screen flex flex-col md:flex-row justify-center items-center p-4 md:p-10 bg-lime-300 w-full overflow-hidden">
-          <div className="w-full md:w-1/2 p-4 text-center md:text-left">
-            <h1 className="text-4xl lg:text-6xl mb-5 font-mono">Discover Your Passion for Art Today</h1>
-            <p className="text-lg lg:text-xl mb-5 font-mono">Dive into a world of creativity and inspiration. Explore stunning artworks from talented artists around the globe.</p>
-            <div className="flex font-mono justify-center md:justify-start gap-4">
-            <Link to="/explore">
-              <button className="px-6 h-12 rounded-full bg-indigo-400 text-white font-semibold hover:bg-indigo-500 transition">
-                Explore
-              </button>
-            </Link>
-              <button className="px-6 h-12 border-2 border-double rounded-full bg-[#000000] text-[#ffffff] font-semibold hover:bg-[#ffffff] hover:text-[#000000] transition">
+        {/* ✨ UPDATED: Layout changes from column to row on large screens (lg) instead of medium (md) */}
+        <div className="sticky top-0 h-screen flex flex-col lg:flex-row justify-center items-center p-4 md:p-10 bg-lime-300 w-full overflow-hidden">
+          {/* ✨ UPDATED: Text container takes full width on tablets, 50% on large screens */}
+          <div className="w-full lg:w-1/2 p-4 text-center lg:text-left">
+            {/* ✨ UPDATED: Responsive font sizes for heading and paragraph */}
+            <h1 className="text-3xl md:text-5xl lg:text-6xl mb-5 font-mono">Discover Your Passion for Art Today</h1>
+            <p className="text-md md:text-lg lg:text-xl mb-5 font-mono">Dive into a world of creativity and inspiration. Explore stunning artworks from talented artists around the globe.</p>
+            <div className="flex font-mono justify-center lg:justify-start gap-4">
+              <Link to="/explore">
+                <button className="px-6 h-12 rounded-full bg-indigo-400 text-white font-semibold hover:bg-indigo-500 transition">
+                  Explore
+                </button>
+              </Link>
+              <Link
+                to={user ? '/my-art' : '/login'}
+                className="px-6 h-12 flex items-center justify-center border-2 border-double rounded-full bg-[#000000] text-[#ffffff] font-semibold hover:bg-[#ffffff] hover:text-[#000000] transition"
+              >
                 Join
-              </button>
+              </Link>
             </div>
           </div>
-          <div className="w-full md:w-1/2 h-[50vh] md:h-full relative flex justify-center items-center">
-            {/* The image now uses framer-motion for scaling and translation */}
+          {/* ✨ UPDATED: Image container takes full width on tablets, 50% on large screens */}
+          <div className="w-full lg:w-1/2 h-[40vh] md:h-[50vh] lg:h-full relative flex justify-center items-center">
             <motion.div
               className="relative w-full max-w-[500px] aspect-video"
               style={{ scale, x }}
@@ -108,13 +120,28 @@ export default function ContinuousImageSlider() {
                 src={images2[currentIndex]}
                 alt={`Dynamic Art ${currentIndex}`}
               />
-               {/* Text appears on top when image is scaled */}
-               <motion.div 
-                    style={{ opacity: textOpacity, y: textY }} 
-                    className="absolute inset-0 flex items-center justify-center text-center text-white p-4"
+              <motion.div 
+                style={{ opacity: textOpacity, y: textY }} 
+                className="absolute inset-0 flex items-center justify-center text-center text-white p-4"
+              >
+                <motion.h2 
+                  className="text-xl sm:text-3xl lg:text-4xl font-bold font-mono mr-4 md:mr-8" 
+                  style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+                  animate={{
+                    x: isMobile ? ["-10%", "10%"] : 0,
+                  }}
+                  transition={{
+                    x: {
+                      duration: 3,
+                      repeat: Infinity,
+                      repeatType: "mirror",
+                      ease: "easeInOut",
+                    }
+                  }}
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold font-mono mr-8" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>Art is Freedom</h2>
-                </motion.div>
+                  Art is Freedom
+                </motion.h2>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -122,7 +149,8 @@ export default function ContinuousImageSlider() {
 
       <FeaturedArtistSection/>
       <CommunitySpotlightSection/>
-      <Footer/>
+      <Footer user={user} isDarkMode={isDarkMode} />
+
     </div>
   );
 }

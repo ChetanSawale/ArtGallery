@@ -1,14 +1,11 @@
-import React from 'react'
+import React from 'react';
+import ContinuousImageSlider from './ContinuousImageSlider'; // Or your component's name
 
-const home = () => {
+// This component now acts as a wrapper to pass props
+export default function Home({ user, isDarkMode }) {
   return (
     <div>
-    <div className='w-full font-mono content-center flex items-center justify-center text-[146px] py-8'>
-        <h1 className="font-bold">Art Gallery</h1>
+      <ContinuousImageSlider user={user} isDarkMode={isDarkMode} />
     </div>
-    
-    </div>
-  )
+  );
 }
-
-export default home

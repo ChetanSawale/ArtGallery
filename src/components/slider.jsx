@@ -51,7 +51,7 @@ export default function ContinuousImageSlider({ user, isDarkMode }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images2.length);
-    }, 2000);
+    }, 200);
     return () => clearInterval(interval);
   }, []);
 

@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* Theme Modes */
+.dark-mode {
+  background-color: #18181b;
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.light-mode {
+  background-color: white;
+  color: black;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+@media screen and (min-width: 760px) and (max-width: 910px) {
+  .nav-mobile-menu {
+    align-items: flex-start;
+    padding-left: 2rem;
+  }
+
+  .nav-mobile-menu .flex {
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .nav-mobile-menu .flex:last-child {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .nav-mobile-menu.open {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+
+/* Mobile Styles (Below 910px) */
+@media (max-width: 910px) {
+.nav {
+  flex-direction: column !important; /* Ensure nav stacks items */
+}
+
+.nav-mobile {
+   flex-direction: row;
+   justify-content: space-between;
+    width: 100%;
+}
+
+.nav-toggle {
+  display: block !important;
+}
+
+  .nav-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 0.5rem;
+    align-items: center; /* Center contents */
+}
+
+.nav-mobile-menu.open {
+  display: flex !important;
+}
+}
+
+/* Desktop Styles (Above 910px) */
+@media (min-width: 911px) {
+  .nav-mobile {
+    flex-direction: row !important;
+  }
+
+  .nav-toggle {
+    display: none !important;
+  }
+
+  .nav-mobile-menu {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: auto;
+    padding-top: 0;
+  }
+}
+
+/* Add this in index.css if not using Tailwind plugin for 3D transforms */
+/* .perspective {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+ */
+
+.perspective {
+  perspective: 1000px;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
